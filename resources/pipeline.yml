@@ -1,0 +1,18 @@
+# Single pipeline publishing to the bronze, silver and gold schemas.
+
+resources:
+  pipelines:
+    carbon_pipeline:
+      name: gb-grid-carbon-pipeline
+      catalog: ${var.catalog}
+      schema: silver
+      serverless: true
+      channel: CURRENT
+      # Added to sys.path at runtime so pipeline code can import carbon_lakehouse.
+      root_path: ../src
+      libraries:
+        - glob:
+            include: ../src/pipelines/**
+      configuration:
+        landing_root: ${var.landing_root}
+        spark.sql.session.timeZone: UTC

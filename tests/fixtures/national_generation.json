@@ -1,0 +1,53 @@
+{
+  "endpoint": "national_generation",
+  "request_from": "2025-06-01T00:00Z",
+  "request_to": "2025-06-01T01:00Z",
+  "extracted_at": "2025-06-01T01:05:00+00:00",
+  "run_id": "run-a",
+  "payload": {
+    "data": [
+      {
+        "from": "2025-06-01T00:00Z",
+        "to": "2025-06-01T00:30Z",
+        "generationmix": [
+          {
+            "fuel": "biomass",
+            "perc": 5.0
+          },
+          {
+            "fuel": "coal",
+            "perc": 0.0
+          },
+          {
+            "fuel": "imports",
+            "perc": 10.0
+          },
+          {
+            "fuel": "gas",
+            "perc": 20.0
+          },
+          {
+            "fuel": "nuclear",
+            "perc": 15.0
+          },
+          {
+            "fuel": "other",
+            "perc": 0.0
+          },
+          {
+            "fuel": "hydro",
+            "perc": 2.0
+          },
+          {
+            "fuel": "solar",
+            "perc": 8.0
+          },
+          {
+            "fuel": "wind",
+            "perc": 40.0
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+# Ingestion config for src/extract/extract_to_volume.py.
+#
+# name            landing folder name and bronze table suffix
+# path_template   API path; {from}/{to} are ISO-8601 UTC (e.g. 2025-01-01T00:00Z)
+# chunk_days      days per API request
+# backfill_start  first date loaded when no watermark exists
+# overlap_hours   hours re-pulled before the watermark on each run, to capture
+#                 forecast revisions and late-arriving actuals
+# enabled         set false to pause a feed
+
+base_url: https://api.carbonintensity.org.uk
+
+endpoints:
+  - name: regional_intensity
+    description: Forecast intensity and generation mix for the 14 GB DNO regions plus England/Scotland/Wales
+    path_template: /regional/intensity/{from}/{to}
+    chunk_days: 7
+    backfill_start: "2024-01-01"
+    overlap_hours: 48
+    enabled: true
+
+  - name: national_intensity
+    description: National forecast and actual intensity
+    path_template: /intensity/{from}/{to}
+    chunk_days: 14
+    backfill_start: "2024-01-01"
+    overlap_hours: 48
+    enabled: true
+
+  - name: national_generation
+    description: National generation mix by fuel
+    path_template: /generation/{from}/{to}
+    chunk_days: 14
+    backfill_start: "2024-01-01"
+    overlap_hours: 48
+    enabled: true

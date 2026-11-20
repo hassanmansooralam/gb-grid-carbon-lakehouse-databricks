@@ -1,0 +1,37 @@
+# Databricks Asset Bundle: pipeline, jobs and code.
+# Platform objects (catalogs, schemas, volumes) are managed in infra/terraform.
+
+bundle:
+  name: gb_grid_carbon_lakehouse
+
+include:
+  - resources/*.yml
+
+sync:
+  exclude:
+    - tests/**
+    - infra/**
+    - _local_landing/**
+    - .github/**
+
+variables:
+  catalog:
+    description: Unity Catalog catalog that holds raw/bronze/silver/gold/ml schemas
+  landing_root:
+    description: UC Volume path the extractor writes raw JSON into
+
+targets:
+  dev:
+    mode: development
+    default: true
+    variables:
+      catalog: carbon_dev
+      landing_root: /Volumes/carbon_dev/raw/landing
+
+  prod:
+    mode: production
+    variables:
+      catalog: carbon_prod
+      landing_root: /Volumes/carbon_prod/raw/landing
+    workspace:
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}

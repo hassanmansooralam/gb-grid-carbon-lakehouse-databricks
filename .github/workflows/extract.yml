@@ -1,0 +1,38 @@
+# Hourly API extract into the UC landing volume. New files trigger carbon_refresh.
+name: extract
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "dev or prod"
+        default: "prod"
+      start:
+        description: "Backfill start (YYYY-MM-DD), blank = incremental"
+        required: false
+      end:
+        description: "Backfill end (YYYY-MM-DD)"
+        required: false
+
+concurrency: extract-${{ inputs.target || 'prod' }}
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      TARGET: ${{ inputs.target || 'prod' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -e ".[extract]"
+      - name: Run extractor
+        run: |
+          ARGS="--mode sdk --volume-root /Volumes/carbon_${TARGET}/raw/landing"
+          if [ -n "${{ inputs.start }}" ]; then ARGS="$ARGS --start ${{ inputs.start }} --end ${{ inputs.end }}"; fi
+          python src/extract/extract_to_volume.py $ARGS

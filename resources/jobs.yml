@@ -1,0 +1,77 @@
+# carbon_refresh              file-arrival trigger: pipeline refresh, then batch scoring
+# carbon_train                weekly retraining with champion/challenger promotion
+# carbon_extract_in_workspace in-workspace extraction for workspaces with internet access (paused)
+
+resources:
+  jobs:
+    carbon_refresh:
+      name: gb-grid-carbon-refresh
+      max_concurrent_runs: 1
+      trigger:
+        pause_status: UNPAUSED
+        file_arrival:
+          url: ${var.landing_root}/
+          min_time_between_triggers_seconds: 900
+          wait_after_last_change_seconds: 120
+      email_notifications:
+        on_failure: ["${workspace.current_user.userName}"]
+      tasks:
+        - task_key: refresh_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.carbon_pipeline.id}
+
+        - task_key: score_forecast
+          depends_on:
+            - task_key: refresh_pipeline
+          environment_key: ml
+          spark_python_task:
+            python_file: ../src/ml/score_forecast.py
+            parameters: ["--catalog", "${var.catalog}"]
+      environments:
+        - environment_key: ml
+          spec:
+            environment_version: "2"
+            dependencies:
+              - scikit-learn>=1.4
+              - mlflow>=2.16
+
+    carbon_train:
+      name: gb-grid-carbon-train
+      schedule:
+        quartz_cron_expression: "0 30 6 ? * MON"
+        timezone_id: Europe/London
+      email_notifications:
+        on_failure: ["${workspace.current_user.userName}"]
+      tasks:
+        - task_key: train_forecast
+          environment_key: ml
+          spark_python_task:
+            python_file: ../src/ml/train_forecast.py
+            parameters: ["--catalog", "${var.catalog}"]
+      environments:
+        - environment_key: ml
+          spec:
+            environment_version: "2"
+            dependencies:
+              - scikit-learn>=1.4
+              - mlflow>=2.16
+
+    carbon_extract_in_workspace:
+      name: gb-grid-carbon-extract-in-workspace
+      schedule:
+        quartz_cron_expression: "0 5 * * * ?"
+        timezone_id: Europe/London
+        pause_status: PAUSED
+      tasks:
+        - task_key: extract
+          environment_key: extract
+          spark_python_task:
+            python_file: ../src/extract/extract_to_volume.py
+            parameters: ["--mode", "local", "--volume-root", "${var.landing_root}"]
+      environments:
+        - environment_key: extract
+          spec:
+            environment_version: "2"
+            dependencies:
+              - pyyaml
+              - requests

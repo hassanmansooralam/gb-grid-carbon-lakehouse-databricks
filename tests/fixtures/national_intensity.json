@@ -1,0 +1,29 @@
+{
+  "endpoint": "national_intensity",
+  "request_from": "2025-06-01T00:00Z",
+  "request_to": "2025-06-01T01:00Z",
+  "extracted_at": "2025-06-01T01:05:00+00:00",
+  "run_id": "run-a",
+  "payload": {
+    "data": [
+      {
+        "from": "2025-06-01T00:00Z",
+        "to": "2025-06-01T00:30Z",
+        "intensity": {
+          "forecast": 120,
+          "actual": 110,
+          "index": "low"
+        }
+      },
+      {
+        "from": "2025-06-01T00:30Z",
+        "to": "2025-06-01T01:00Z",
+        "intensity": {
+          "forecast": 125,
+          "actual": null,
+          "index": "low"
+        }
+      }
+    ]
+  }
+}

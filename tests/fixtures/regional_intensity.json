@@ -1,0 +1,211 @@
+{
+  "endpoint": "regional_intensity",
+  "request_from": "2025-06-01T00:00Z",
+  "request_to": "2025-06-01T01:00Z",
+  "extracted_at": "2025-06-01T01:05:00+00:00",
+  "run_id": "run-a",
+  "payload": {
+    "data": [
+      {
+        "from": "2025-06-01T00:00Z",
+        "to": "2025-06-01T00:30Z",
+        "regions": [
+          {
+            "regionid": 1,
+            "dnoregion": "SSE North",
+            "shortname": "North Scotland",
+            "intensity": {
+              "forecast": 10,
+              "index": "very low"
+            },
+            "generationmix": [
+              {
+                "fuel": "biomass",
+                "perc": 5.0
+              },
+              {
+                "fuel": "coal",
+                "perc": 0.0
+              },
+              {
+                "fuel": "imports",
+                "perc": 10.0
+              },
+              {
+                "fuel": "gas",
+                "perc": 0.0
+              },
+              {
+                "fuel": "nuclear",
+                "perc": 15.0
+              },
+              {
+                "fuel": "other",
+                "perc": 0.0
+              },
+              {
+                "fuel": "hydro",
+                "perc": 2.0
+              },
+              {
+                "fuel": "solar",
+                "perc": 8.0
+              },
+              {
+                "fuel": "wind",
+                "perc": 60.0
+              }
+            ]
+          },
+          {
+            "regionid": 13,
+            "dnoregion": "UKPN London",
+            "shortname": "London",
+            "intensity": {
+              "forecast": 180,
+              "index": "moderate"
+            },
+            "generationmix": [
+              {
+                "fuel": "biomass",
+                "perc": 5.0
+              },
+              {
+                "fuel": "coal",
+                "perc": 0.0
+              },
+              {
+                "fuel": "imports",
+                "perc": 10.0
+              },
+              {
+                "fuel": "gas",
+                "perc": 30.0
+              },
+              {
+                "fuel": "nuclear",
+                "perc": 15.0
+              },
+              {
+                "fuel": "other",
+                "perc": 0.0
+              },
+              {
+                "fuel": "hydro",
+                "perc": 2.0
+              },
+              {
+                "fuel": "solar",
+                "perc": 18.0
+              },
+              {
+                "fuel": "wind",
+                "perc": 20.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "from": "2025-06-01T00:30Z",
+        "to": "2025-06-01T01:00Z",
+        "regions": [
+          {
+            "regionid": 1,
+            "dnoregion": "SSE North",
+            "shortname": "North Scotland",
+            "intensity": {
+              "forecast": 12,
+              "index": "very low"
+            },
+            "generationmix": [
+              {
+                "fuel": "biomass",
+                "perc": 5.0
+              },
+              {
+                "fuel": "coal",
+                "perc": 0.0
+              },
+              {
+                "fuel": "imports",
+                "perc": 10.0
+              },
+              {
+                "fuel": "gas",
+                "perc": 2.0
+              },
+              {
+                "fuel": "nuclear",
+                "perc": 15.0
+              },
+              {
+                "fuel": "other",
+                "perc": 0.0
+              },
+              {
+                "fuel": "hydro",
+                "perc": 2.0
+              },
+              {
+                "fuel": "solar",
+                "perc": 8.0
+              },
+              {
+                "fuel": "wind",
+                "perc": 58.0
+              }
+            ]
+          },
+          {
+            "regionid": 13,
+            "dnoregion": "UKPN London",
+            "shortname": "London",
+            "intensity": {
+              "forecast": 9999,
+              "index": "high"
+            },
+            "generationmix": [
+              {
+                "fuel": "biomass",
+                "perc": 5.0
+              },
+              {
+                "fuel": "coal",
+                "perc": 0.0
+              },
+              {
+                "fuel": "imports",
+                "perc": 10.0
+              },
+              {
+                "fuel": "gas",
+                "perc": 30.0
+              },
+              {
+                "fuel": "nuclear",
+                "perc": 15.0
+              },
+              {
+                "fuel": "other",
+                "perc": 0.0
+              },
+              {
+                "fuel": "hydro",
+                "perc": 2.0
+              },
+              {
+                "fuel": "solar",
+                "perc": 18.0
+              },
+              {
+                "fuel": "wind",
+                "perc": 20.0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
