@@ -1,4 +1,4 @@
-# GB Grid Carbon Lakehouse
+﻿# GB Grid Carbon Lakehouse
 
 An end-to-end Databricks lakehouse on half-hourly carbon intensity data for the GB electricity grid. It identifies **when and where electricity is cleanest**, measures **how accurate the official forecast is**, and trains and benchmarks a **24-hour-ahead forecast model**.
 
@@ -38,6 +38,10 @@ flowchart LR
 
 Extraction runs in GitHub Actions and pushes files into a Unity Catalog Volume, because Databricks Free Edition restricts outbound internet access. New files fire a file arrival trigger, so processing is event-driven. On a workspace with internet access, the same extractor runs as a Databricks job (`carbon_extract_in_workspace`).
 
+## Dashboard
+
+![AI/BI dashboard](docs/images/dashboard.png)
+
 ## Results
 
 | Metric | Value |
@@ -60,17 +64,17 @@ Without weather inputs, the model does not beat persistence. Day-ahead intensity
 | Layer | Table | Grain | Notes |
 |---|---|---|---|
 | Bronze | `bronze.{regional_intensity,national_intensity,national_generation}_raw` | landed file | Append-only; every forecast revision retained |
-| Silver | `silver.regional_intensity` | region × half-hour | AUTO CDC SCD1, latest forecast |
-| Silver | `silver.regional_generation_mix` | region × half-hour × fuel | |
+| Silver | `silver.regional_intensity` | region Ã— half-hour | AUTO CDC SCD1, latest forecast |
+| Silver | `silver.regional_generation_mix` | region Ã— half-hour Ã— fuel | |
 | Silver | `silver.national_intensity` | half-hour | Forecast and actual |
-| Silver | `silver.national_generation_mix` | half-hour × fuel | |
+| Silver | `silver.national_generation_mix` | half-hour Ã— fuel | |
 | Silver | `silver.dim_region` | region | |
-| Gold | `gold.fact_regional_halfhour` | region × half-hour | Intensity, fuel mix, renewable/low-carbon share, UK time |
-| Gold | `gold.region_daily_summary` | region × UK day | |
-| Gold | `gold.greenest_slots` | region × weekday × slot | Last 90 days |
+| Gold | `gold.fact_regional_halfhour` | region Ã— half-hour | Intensity, fuel mix, renewable/low-carbon share, UK time |
+| Gold | `gold.region_daily_summary` | region Ã— UK day | |
+| Gold | `gold.greenest_slots` | region Ã— weekday Ã— slot | Last 90 days |
 | Gold | `gold.national_halfhour` | half-hour | ML base table |
 | Gold | `gold.national_forecast_accuracy` | UK day | MAE, MAPE, bias |
-| ML | `ml.forecast_predictions` | half-hour × scoring run | Appended per run |
+| ML | `ml.forecast_predictions` | half-hour Ã— scoring run | Appended per run |
 | ML | `ml.carbon_intensity_forecaster` | model | `@champion` / `@challenger` aliases |
 
 Column definitions: [docs/data_dictionary.md](docs/data_dictionary.md).
@@ -134,10 +138,11 @@ export DATABRICKS_CONFIG_PROFILE=carbon                 # Windows: $env:DATABRIC
 | Single pipeline across three schemas | Simpler lineage; fits the Free Edition pipeline limit |
 | Explicit bronze schemas with rescue mode | Predictable types; unexpected fields go to `_rescued_data` |
 | Pure transformation functions in a library | Business logic is unit-tested independently of the pipeline runtime |
-| All lag features ≥ 48 periods | No leakage into the 24-hour forecast horizon |
+| All lag features â‰¥ 48 periods | No leakage into the 24-hour forecast horizon |
 | Champion/challenger aliases | A new model is promoted only if it beats the current one |
 | Catalogs imported into Terraform with `prevent_destroy` | Default-storage catalogs are UI-created; Terraform manages them safely |
 
 ## Attribution
 
-Carbon intensity data © NESO, licensed under CC BY 4.0.
+Carbon intensity data Â© NESO, licensed under CC BY 4.0.
+
