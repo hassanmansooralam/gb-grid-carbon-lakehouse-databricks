@@ -146,3 +146,5 @@ export DATABRICKS_CONFIG_PROFILE=carbon                 # Windows: $env:DATABRIC
 
 Carbon intensity data Â© NESO, licensed under CC BY 4.0.
 
+Documentation, code formatting and comments added by Claude.
+
